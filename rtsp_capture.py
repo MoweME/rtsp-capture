@@ -40,6 +40,8 @@ def get_config_value(config, section, key, env_var, prompt_message, is_sensitive
     config_section = config.get(section, {})
 
     if value:
+        # Strip any surrounding quotes from the environment variable value
+        value = value.strip('"\'')
         print(f"Using {key} from environment variable {env_var}.")
         if section not in config:
             config[section] = {}

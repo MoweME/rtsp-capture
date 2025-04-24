@@ -19,7 +19,7 @@ docker run -d --name rtsp-capture-app \
   -e RTSP_PASSWORD="<your_password>" \
   -e RTSP_SCHEDULE="*/15 * * * *" \
   -v "$(pwd)/screenshots:/app/screenshots" \
-  ghcr.io/MoweME/rtsp-capture:latest # Use the appropriate tag (e.g., latest, develop)
+  ghcr.io/moweme/rtsp-capture:latest # Use the appropriate tag (e.g., latest, develop)
 ```
 
 ### Using Docker Compose
@@ -27,18 +27,16 @@ docker run -d --name rtsp-capture-app \
 Alternatively, you can use Docker Compose. Create a `docker-compose.yml` file with the following content:
 
 ```yaml
-version: '3.8'
 services:
-  rtsp-capture:
-    image: ghcr.io/MoweME/rtsp-capture:latest # Or specify a different tag like :develop
-    container_name: rtsp-capture-app
+  app:
+    image: ghcr.io/moweme/rtsp-capture:latest # Or specify a different tag like :develop
     restart: unless-stopped
     environment:
-      - RTSP_HOST=<your_rtsp_host>:<port>
-      - RTSP_PATH=<your_rtsp_path>
-      - RTSP_USERNAME=<your_username>
-      - RTSP_PASSWORD=<your_password>
-      - RTSP_SCHEDULE=*/15 * * * * # Adjust schedule as needed
+      - RTSP_HOST="<your_rtsp_host>:<port>"
+      - RTSP_PATH="<your_rtsp_path>"
+      - RTSP_USERNAME="<your_username>"
+      - RTSP_PASSWORD="<your_password>"
+      - RTSP_SCHEDULE="*/15 * * * *" # Adjust schedule as needed
     volumes:
       - ./screenshots:/app/screenshots
 ```
@@ -47,10 +45,10 @@ services:
 
 Docker images are automatically built and pushed to the GitHub Container Registry (GHCR) for every push to the `main` and `develop` branches.
 
-*   **Main Branch (`latest` tag):** `ghcr.io/MoweME/rtsp-capture:latest`
-*   **Develop Branch (`develop` tag):** `ghcr.io/MoweME/rtsp-capture:develop`
+*   **Main Branch (`latest` tag):** `ghcr.io/moweme/rtsp-capture:latest`
+*   **Develop Branch (`develop` tag):** `ghcr.io/moweme/rtsp-capture:develop`
 
-You can pull these images using `docker pull ghcr.io/MoweME/rtsp-capture:<tag>`.
+You can pull these images using `docker pull ghcr.io/moweme/rtsp-capture:<tag>`.
 
 ## Configuration
 
