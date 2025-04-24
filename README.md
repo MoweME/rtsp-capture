@@ -22,11 +22,26 @@ docker run -d --name rtsp-capture-app \
   ghcr.io/MoweME/rtsp-capture:latest # Use the appropriate tag (e.g., latest, develop)
 ```
 
-*   Replace the placeholder values (`<...>`) with your actual RTSP stream details.
-*   The `-d` flag runs the container in detached mode.
-*   The `-v` flag mounts the local `screenshots` directory into the container's `/app/screenshots` directory, ensuring screenshots persist even if the container is removed.
-*   Use `docker logs rtsp-capture-app -f` to view the container logs.
-*   Use `docker stop rtsp-capture-app` to stop the container.
+### Using Docker Compose
+
+Alternatively, you can use Docker Compose. Create a `docker-compose.yml` file with the following content:
+
+```yaml
+version: '3.8'
+services:
+  rtsp-capture:
+    image: ghcr.io/MoweME/rtsp-capture:latest # Or specify a different tag like :develop
+    container_name: rtsp-capture-app
+    restart: unless-stopped
+    environment:
+      - RTSP_HOST=<your_rtsp_host>:<port>
+      - RTSP_PATH=<your_rtsp_path>
+      - RTSP_USERNAME=<your_username>
+      - RTSP_PASSWORD=<your_password>
+      - RTSP_SCHEDULE=*/15 * * * * # Adjust schedule as needed
+    volumes:
+      - ./screenshots:/app/screenshots
+```
 
 ## Automated Builds (GHCR)
 

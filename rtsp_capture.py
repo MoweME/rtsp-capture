@@ -109,6 +109,10 @@ def main():
     password = get_config_value(config, section, 'password', 'RTSP_PASSWORD', "Enter RTSP password: ", is_sensitive=True)
     schedule_str = get_config_value(config, section, 'schedule', 'RTSP_SCHEDULE', f"Enter schedule (minutes or crontab string, default: '{DEFAULT_SCHEDULE}'): ")
 
+    # Clean up schedule string (remove potential quotes and whitespace)
+    if schedule_str:
+        schedule_str = schedule_str.strip().strip('\'"')
+
     if not schedule_str:
         schedule_str = DEFAULT_SCHEDULE
         if section not in config:
