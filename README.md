@@ -1,15 +1,46 @@
 # rtsp-capture
 
-Captures screenshots from a password-protected RTSP stream at regular intervals.
+Captures screenshots from a password-protected RTSP stream at regular intervals. This is perfect for collecting a series of images over time to create a timelapse video.
 
-## Installation
+## Docker Usage
 
-1.  Clone the repository or download the files.
-2.  Install the required Python packages:
-    ```bash
-    pip install -r requirements.txt
-    ```
-    *(This installs `opencv-python`, `PyYAML`, and `croniter`)*
+You can also run this application inside a Docker container.
+
+### Building the Image
+
+```bash
+docker build -t rtsp-capture .
+```
+
+### Running the Container
+
+It's recommended to pass configuration using environment variables and mount a volume for the screenshots. Use the pre-built image from GHCR:
+
+```bash
+docker run -d --name rtsp-capture-app \
+  -e RTSP_HOST="<your_rtsp_host>:<port>" \
+  -e RTSP_PATH="<your_rtsp_path>" \
+  -e RTSP_USERNAME="<your_username>" \
+  -e RTSP_PASSWORD="<your_password>" \
+  -e RTSP_SCHEDULE="*/15 * * * *" \
+  -v "$(pwd)/screenshots:/app/screenshots" \
+  ghcr.io/MoweME/rtsp-capture:latest # Use the appropriate tag (e.g., latest, develop)
+```
+
+*   Replace the placeholder values (`<...>`) with your actual RTSP stream details.
+*   The `-d` flag runs the container in detached mode.
+*   The `-v` flag mounts the local `screenshots` directory into the container's `/app/screenshots` directory, ensuring screenshots persist even if the container is removed.
+*   Use `docker logs rtsp-capture-app -f` to view the container logs.
+*   Use `docker stop rtsp-capture-app` to stop the container.
+
+## Automated Builds (GHCR)
+
+Docker images are automatically built and pushed to the GitHub Container Registry (GHCR) for every push to the `main` and `develop` branches.
+
+*   **Main Branch (`latest` tag):** `ghcr.io/MoweME/rtsp-capture:latest`
+*   **Develop Branch (`develop` tag):** `ghcr.io/MoweME/rtsp-capture:develop`
+
+You can pull these images using `docker pull ghcr.io/MoweME/rtsp-capture:<tag>`.
 
 ## Configuration
 
@@ -44,42 +75,11 @@ python rtsp_capture.py
 
 The script will start capturing screenshots according to the defined schedule and save them to a `screenshots` directory. Press `Ctrl+C` to stop the script.
 
-## Docker Usage
+## Installation
 
-You can also run this application inside a Docker container.
-
-### Building the Image
-
-```bash
-docker build -t rtsp-capture .
-```
-
-### Running the Container
-
-It's recommended to pass configuration using environment variables and mount a volume for the screenshots.
-
-```bash
-docker run -d --name rtsp-capture-app \
-  -e RTSP_HOST="<your_rtsp_host>:<port>" \
-  -e RTSP_PATH="<your_rtsp_path>" \
-  -e RTSP_USERNAME="<your_username>" \
-  -e RTSP_PASSWORD="<your_password>" \
-  -e RTSP_SCHEDULE="*/15 * * * *" \
-  -v "$(pwd)/screenshots:/app/screenshots" \
-  rtsp-capture
-```
-
-*   Replace the placeholder values (`<...>`) with your actual RTSP stream details.
-*   The `-d` flag runs the container in detached mode.
-*   The `-v` flag mounts the local `screenshots` directory into the container's `/app/screenshots` directory, ensuring screenshots persist even if the container is removed.
-*   Use `docker logs rtsp-capture-app -f` to view the container logs.
-*   Use `docker stop rtsp-capture-app` to stop the container.
-
-## Automated Builds (GHCR)
-
-Docker images are automatically built and pushed to the GitHub Container Registry (GHCR) for every push to the `main` and `develop` branches.
-
-*   **Main Branch (`latest` tag):** `ghcr.io/MoweME/rtsp-capture:latest`
-*   **Develop Branch (`develop` tag):** `ghcr.io/MoweME/rtsp-capture:develop`
-
-You can pull these images using `docker pull ghcr.io/MoweME/rtsp-capture:<tag>`.
+1.  Clone the repository or download the files.
+2.  Install the required Python packages:
+    ```bash
+    pip install -r requirements.txt
+    ```
+    *(This installs `opencv-python`, `PyYAML`, and `croniter`)*
