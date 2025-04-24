@@ -74,3 +74,12 @@ docker run -d --name rtsp-capture-app \
 *   The `-v` flag mounts the local `screenshots` directory into the container's `/app/screenshots` directory, ensuring screenshots persist even if the container is removed.
 *   Use `docker logs rtsp-capture-app -f` to view the container logs.
 *   Use `docker stop rtsp-capture-app` to stop the container.
+
+## Automated Builds (GHCR)
+
+Docker images are automatically built and pushed to the GitHub Container Registry (GHCR) for every push to the `main` and `develop` branches.
+
+*   **Main Branch (`latest` tag):** `ghcr.io/MoweME/rtsp-capture:latest`
+*   **Develop Branch (`develop` tag):** `ghcr.io/MoweME/rtsp-capture:develop`
+
+You can pull these images using `docker pull ghcr.io/MoweME/rtsp-capture:<tag>`.
