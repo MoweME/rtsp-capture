@@ -6,18 +6,13 @@ Captures screenshots from a password-protected RTSP stream at regular intervals.
 
 You can also run this application inside a Docker container.
 
-### Building the Image
-
-```bash
-docker build -t rtsp-capture .
-```
-
 ### Running the Container
 
 It's recommended to pass configuration using environment variables and mount a volume for the screenshots. Use the pre-built image from GHCR:
 
 ```bash
 docker run -d --name rtsp-capture-app \
+  --restart unless-stopped \
   -e RTSP_HOST="<your_rtsp_host>:<port>" \
   -e RTSP_PATH="<your_rtsp_path>" \
   -e RTSP_USERNAME="<your_username>" \
@@ -83,3 +78,11 @@ The script will start capturing screenshots according to the defined schedule an
     pip install -r requirements.txt
     ```
     *(This installs `opencv-python`, `PyYAML`, and `croniter`)*
+
+### Building the Image (Optional)
+
+If you prefer to build the image locally:
+
+```bash
+docker build -t rtsp-capture .
+```
