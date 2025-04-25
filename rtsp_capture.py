@@ -7,11 +7,14 @@ from datetime import datetime, timedelta
 import getpass
 from croniter import croniter
 
+# Store the original print function
+original_print = print
+
 # Configure print function to always flush output
 def print_flush(*args, **kwargs):
     """Custom print function that always flushes output - helps with Docker logs."""
     kwargs.update({'flush': True})
-    print(*args, **kwargs)
+    original_print(*args, **kwargs)
 
 # Replace builtin print with our flushing version
 print = print_flush
