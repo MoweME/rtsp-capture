@@ -2,9 +2,19 @@ import cv2
 import os
 import time
 import yaml
+import sys
 from datetime import datetime, timedelta
 import getpass
 from croniter import croniter
+
+# Configure print function to always flush output
+def print_flush(*args, **kwargs):
+    """Custom print function that always flushes output - helps with Docker logs."""
+    kwargs.update({'flush': True})
+    print(*args, **kwargs)
+
+# Replace builtin print with our flushing version
+print = print_flush
 
 CONFIG_FILE = 'config.yaml'
 DEFAULT_SCHEDULE = '*/5 * * * *'
